@@ -26,43 +26,43 @@ locals {
     path = "https://s3.amazonaws.com/homelikeautomation/mongodb/"
   }
 }
-# resource "aws_ssm_association" "init" {
-#   depends_on       = [aws_instance.db1, aws_instance.db2, aws_instance.db3, aws_iam_role_policy_attachment.resources_s3read_policy, aws_iam_role_policy_attachment.resources_ssm_policy]
-#   name             = "AWS-ApplyAnsiblePlaybooks"
-#   association_name = "01_init"
-#   max_concurrency  = "50"
-#   max_errors       = "0"
-#   parameters = {
-#     SourceType          = "S3"
-#     SourceInfo          = jsonencode(local.mongopath_info)
-#     InstallDependencies = "False"
-#     PlaybookFile        = "mongo/01_init.yml"
-#     ExtraVariables      = "ansible_python_interpreter=/usr/bin/python"
-#   }
-#   targets {
-#     key    = "tag:Type"
-#     values = ["DB"]
-#   }
-# }
-# resource "aws_ssm_association" "install_mongod_wt" {
-#   depends_on       = [aws_ssm_association.init, aws_instance.db1, aws_instance.db2, aws_instance.db3, aws_iam_role_policy_attachment.resources_s3read_policy, aws_iam_role_policy_attachment.resources_ssm_policy]
-#   name             = "AWS-ApplyAnsiblePlaybooks"
-#   association_name = "02_install_mongod_wt"
-#   max_concurrency  = "50"
-#   max_errors       = "0"
-#   parameters = {
-#     SourceType          = "S3"
-#     SourceInfo          = jsonencode(local.mongopath_info)
-#     InstallDependencies = "False"
-#     PlaybookFile        = "mongo/02_install_mongod_wt.yml"
-#     ExtraVariables      = "ansible_python_interpreter=/usr/bin/python"
-#     Verbose = "-v"
-#   }
-#   targets {
-#     key    = "tag:Type"
-#     values = ["DB"]
-#   }
-# }
+resource "aws_ssm_association" "init" {
+  depends_on       = [aws_instance.db1, aws_instance.db2, aws_instance.db3, aws_iam_role_policy_attachment.resources_s3read_policy, aws_iam_role_policy_attachment.resources_ssm_policy]
+  name             = "AWS-ApplyAnsiblePlaybooks"
+  association_name = "01_init"
+  max_concurrency  = "50"
+  max_errors       = "0"
+  parameters = {
+    SourceType          = "S3"
+    SourceInfo          = jsonencode(local.mongopath_info)
+    InstallDependencies = "False"
+    PlaybookFile        = "mongo/01_init.yml"
+    ExtraVariables      = "ansible_python_interpreter=/usr/bin/python"
+  }
+  targets {
+    key    = "tag:Type"
+    values = ["DB"]
+  }
+}
+resource "aws_ssm_association" "install_mongod_wt" {
+  depends_on       = [aws_ssm_association.init, aws_instance.db1, aws_instance.db2, aws_instance.db3, aws_iam_role_policy_attachment.resources_s3read_policy, aws_iam_role_policy_attachment.resources_ssm_policy]
+  name             = "AWS-ApplyAnsiblePlaybooks"
+  association_name = "02_install_mongod_wt"
+  max_concurrency  = "50"
+  max_errors       = "0"
+  parameters = {
+    SourceType          = "S3"
+    SourceInfo          = jsonencode(local.mongopath_info)
+    InstallDependencies = "False"
+    PlaybookFile        = "mongo/02_install_mongod_wt.yml"
+    ExtraVariables      = "ansible_python_interpreter=/usr/bin/python"
+    Verbose             = "-v"
+  }
+  targets {
+    key    = "tag:Type"
+    values = ["DB"]
+  }
+}
 # resource "aws_ssm_association" "create_admin_users" {
 #   depends_on       = [aws_ssm_association.install_mongod_wt, aws_instance.db1, aws_instance.db2, aws_instance.db3, aws_iam_role_policy_attachment.resources_s3read_policy, aws_iam_role_policy_attachment.resources_ssm_policy]
 #   name             = "AWS-ApplyAnsiblePlaybooks"
