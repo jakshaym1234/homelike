@@ -163,7 +163,7 @@ resource "aws_security_group" "nginx" {
   description = "HTTP from Internet"
   vpc_id      = aws_vpc.homelikevpc.id
   ingress {
-    description = "HTTP from Internet"
+    description = "HTTP from ALB"
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
@@ -179,7 +179,7 @@ resource "aws_security_group" "nginx" {
   #for ansible server
   #----------------------------
   ingress {
-    description = "SSH from Internet"
+    description = "SSH from Test ANSIBLE"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -191,9 +191,9 @@ resource "aws_security_group" "app" {
   description = "app"
   vpc_id      = aws_vpc.homelikevpc.id
   ingress {
-    description = "HTTP from Internet"
-    from_port   = 80
-    to_port     = 80
+    description = "Node JS from NGINX"
+    from_port   = 3000
+    to_port     = 3000
     protocol    = "tcp"
     cidr_blocks = [var.subnet_nginx_details.subnet-nginx1.cidr, var.subnet_nginx_details.subnet-nginx2.cidr, var.subnet_nginx_details.subnet-nginx3.cidr]
   }
@@ -207,7 +207,7 @@ resource "aws_security_group" "app" {
   #for ansible server
   #----------------------------
   ingress {
-    description = "SSH from Internet"
+    description = "SSH from test ANSIBLE"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -240,6 +240,16 @@ resource "aws_security_group" "db" {
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = [var.subnet_vpn_details.vpn.cidr]
+  }
+  #-----------------------------
+  #for ansible server
+  #----------------------------
+  ingress {
+    description = "SSH from test ANSIBLE"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = [var.subnet_alb_details.subnet-alb1.cidr, var.subnet_alb_details.subnet-alb2.cidr, var.subnet_alb_details.subnet-alb3.cidr]
   }
 }
 
