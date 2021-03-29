@@ -147,7 +147,7 @@ resource "aws_security_group" "alb_nginx" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   #-----------------------------
-  #for ansible server
+  #for ansible server only for testing
   #----------------------------
   ingress {
     description = "SSH from Internet"
@@ -176,7 +176,7 @@ resource "aws_security_group" "nginx" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   #-----------------------------
-  #for ansible server
+  #for ansible server only for testing
   #----------------------------
   ingress {
     description = "SSH from Test ANSIBLE"
@@ -204,7 +204,7 @@ resource "aws_security_group" "app" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   #-----------------------------
-  #for ansible server
+  #for ansible server only for testing
   #----------------------------
   ingress {
     description = "SSH from test ANSIBLE"
@@ -242,7 +242,7 @@ resource "aws_security_group" "db" {
     cidr_blocks = [var.subnet_vpn_details.vpn.cidr]
   }
   #-----------------------------
-  #for ansible server
+  #for ansible server only for testing
   #----------------------------
   ingress {
     description = "SSH from test ANSIBLE"
